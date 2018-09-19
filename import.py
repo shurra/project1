@@ -16,15 +16,15 @@ def main():
     db.execute("CREATE TABLE books (id SERIAL PRIMARY KEY, isbn VARCHAR(13) NOT NULL, title VARCHAR(50) NOT NULL, author VARCHAR(50) NOT NULL, year INTEGER NOT NULL)")
     with open("books.csv", "r") as f:
         books = csv.reader(f)
-        # print(reader)
-        i = 1
-        for isbn, title, author, year in books:
-            res = db.execute("INSERT INTO books (isbn, title, author, year) VALUES (:isbn, :title, :author, :year)",
-                         {"isbn": isbn, "title": title, "author": author, "year": year})
-            print(f"Book# {i} added")
-            i += 1
+        for i, book in enumerate(books):
+            if i == 0:
+                continue
+            else:
+                db.execute("INSERT INTO books (isbn, title, author, year) VALUES (:isbn, :title, :author, :year)",
+                           {"isbn": book[0], "title": book[1], "author": book[2], "year": book[3]})
+                db.commit()
+                print(f"Book# {i} added.")
 
-        db.commit()
 
 if __name__ == "__main__":
     main()
