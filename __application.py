@@ -7,8 +7,6 @@ from sqlalchemy.orm import scoped_session, sessionmaker
 
 import requests
 
-from helpers import apology, login_required, lookup
-
 app = Flask(__name__)
 
 # Ensure templates are auto-reloaded

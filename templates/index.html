@@ -1,5 +1,12 @@
 {% extends "layout.html" %}
-{% block body %}
+{% block title %}Index{% endblock %}
+{% block content %}
   <h1>Overview</h1>
-  <p>Do you want to <a href="{{ url_for('login') }}">log in?</a>
+  <p>Do you want to <a href="{{ url_for('login') }}">log in?</a></p>
+  <ul>
+    {% for book in books %}
+      <li>{{ book.isbn }} - {{ book.title }}</li>
+    {% endfor %}
+  </ul>
+
 {% endblock %}

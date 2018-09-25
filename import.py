@@ -3,7 +3,7 @@ import csv
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 
-# postgres://xmfyymuuzkjmzu:c95edcf2c3e814490426ea0f8c89c0b18dc93b4950409c1aa1744f7746081057@ec2-54-228-251-254.eu-west-1.compute.amazonaws.com:5432/dfh070s4jnt629
+# postgres://reyktcizwqfkeh:3b566486c76c032b255767d78d00f7bc289ccc93283826f465c3825d8f1eff14@ec2-54-247-101-205.eu-west-1.compute.amazonaws.com:5432/ddgv5q820v7o4r
 
 # Database object
 engine = create_engine(os.getenv("DATABASE_URL"), echo=False)

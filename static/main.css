@@ -1,0 +1,93 @@
+#toTop, .mb-1, header {
+  background-color: #007bff;
+  color: white;
+}
+
+header {
+  text-align: center;
+}
+
+footer {
+  height: 60px;
+  line-height: 60px;
+  /* Vertically center the text there */
+  max-width: content-box;
+  background-color: #007bff;
+  text-align: center;
+}
+footer span {
+  color: white;
+}
+
+.mb-1 {
+  color: black;
+}
+
+.badge {
+  background-color: tomato;
+}
+
+body {
+  background-color: whitesmoke;
+  width: auto;
+}
+
+#toTop {
+  display: none;
+  /* Hidden by default */
+  position: fixed;
+  /* Fixed/sticky position */
+  bottom: 20px;
+  /* Place the button at the bottom of the page */
+  right: 30px;
+  /* Place the button 30px from the right */
+  z-index: 99;
+  /* Make sure it does not overlap */
+  border: none;
+  /* Remove borders */
+  outline: none;
+  /* Remove outline */
+  cursor: pointer;
+  /* Add a mouse pointer on hover */
+  padding: 15px;
+  /* Some padding */
+  border-radius: 10px;
+  /* Rounded corners */
+  font-size: 18px;
+  /* Increase font size */
+}
+
+#toTop:hover {
+  background-color: #555;
+  /* Add a dark-grey background on hover */
+}
+
+.jumbotron h2 {
+  font-weight: bold;
+  font-size: x-large;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+@media screen and (max-width: 480px) {
+  html {
+    font-size: 12px;
+  }
+}
+@media print {
+  footer {
+    display: none;
+  }
+
+  .badge {
+    display: none;
+  }
+}
+#collapse1 {
+  background-color: white;
+}
+
+/*# sourceMappingURL=main.css.map */
