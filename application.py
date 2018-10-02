@@ -31,8 +31,8 @@ db = scoped_session(sessionmaker(bind=engine))
 # Ensure templates are auto-reloaded
 app.config["TEMPLATES_AUTO_RELOAD"] = True
 
-#Goodreads
-GoodreadsKey ="6FmDrXrBHdMm22IUXa5Kw"
+# Goodreads
+GoodreadsKey = "6FmDrXrBHdMm22IUXa5Kw"
 
 
 @app.route("/")
@@ -41,10 +41,10 @@ def index():
     """Index page"""
     random_books = db.execute("SELECT * FROM books ORDER BY random() LIMIT 6;").fetchall()
     books = []
-    img_pattern = r"<image_url>(.*?)</image_url>"
+
     for book in random_books:
-        # res = requests.get("https://www.goodreads.com/book/review_counts.json", params={"key": GoodreadsKey, "isbns": book.isbn})
-        search_res = requests.get("https://www.goodreads.com/search/index.xml", params={"key": GoodreadsKey, "q": book.isbn}).text
+        search_res = requests.get("https://www.goodreads.com/search/index.xml",
+                                  params={"key": GoodreadsKey, "q": book.isbn}).text
         books.append(
             {"isbn": book.isbn,
              "title": book.title,
@@ -61,8 +61,6 @@ def login():
 
     # Forget any user_id
     session.clear()
-
-    error = None
 
     # User reached route via POST (as by submitting a form via POST)
     if request.method == "POST":
@@ -96,6 +94,7 @@ def login():
     # User reached route via GET (as by clicking a link or via redirect)
     # else:
     return render_template("login.html")
+
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
@@ -155,6 +154,7 @@ def search():
 
     return render_template("search.html")
 
+
 @app.route("/book/<int:book_id>", methods=["GET", "POST"])
 @login_required
 def book_view(book_id):
@@ -174,18 +174,31 @@ def book_view(book_id):
                     "rating": request.form.get("rating")})
         db.commit()
         return redirect("/book/" + str(book_id))
-    book = infoBook(book_id)
+    book = book_info(book_id)
     # print(book["reviews"][0][1])
     return render_template("book_view.html", book=book)
+
 
 @app.route("/api/<string:isbn>", methods=["GET"])
 def api(isbn):
     book = db.execute("SELECT * FROM books WHERE isbn = :isbn", {"isbn": isbn}).fetchone()
     if not book:
         abort(404)
-    ratings = requests.get("https://www.goodreads.com/book/review_counts.json",
-                           params={"key": GoodreadsKey, "isbns": book.isbn}).json()
-    return jsonify(title=book.title, author=book.author, year=book.year, isbn=book.isbn, review_count=ratings["books"][0]["reviews_count"], average_score=float(ratings["books"][0]["average_rating"]))
+    ratings = db.execute("SELECT rating FROM reviews WHERE book_id = (SELECT id FROM books WHERE isbn = :isbn)",
+                         {"isbn": isbn}).fetchall()
+    ratings_count = len(ratings)
+    average_score = sum(int(rating[0]) for rating in ratings) / ratings_count
+
+    # ratings = requests.get("https://www.goodreads.com/book/review_counts.json",
+    #                        params={"key": GoodreadsKey, "isbns": book.isbn}).json()
+    return jsonify(title=book.title,
+                   author=book.author,
+                   year=book.year,
+                   isbn=book.isbn,
+                   review_count=ratings_count,
+                   average_score=average_score
+                   )
+
 
 @app.route("/logout")
 @login_required
@@ -194,16 +207,17 @@ def logout():
     session.clear()
     return redirect("/")
 
-def infoBook(id):
 
-    book = db.execute("SELECT * FROM books WHERE id = :id", {"id": id}).fetchone()
+def book_info(book_id):
+
+    book = db.execute("SELECT * FROM books WHERE id = :id", {"id": book_id}).fetchone()
     gr = requests.get("https://www.goodreads.com/book/review_counts.json",
                       params={"key": GoodreadsKey, "isbns": book.isbn}).json()
     xml_res = requests.get("https://www.goodreads.com/search/index.xml",
                            params={"key": GoodreadsKey, "q": book["isbn"]}).text
     # book_reviews = db.execute("SELECT * FROM reviews WHERE book_id=:id", {"id": id}).fetchall()
     book_reviews = db.execute("SELECT username, text, rating FROM users JOIN reviews ON reviews.user_id = users.id WHERE book_id=:book_id",
-                              {"book_id": id}).fetchall()
+                              {"book_id": book_id}).fetchall()
     return {"isbn": book["isbn"],
             "id": book["id"],
             "author": book["author"],
