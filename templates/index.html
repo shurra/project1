@@ -1,12 +1,27 @@
 {% extends "layout.html" %}
 {% block title %}Index{% endblock %}
 {% block content %}
-  <h1>Overview</h1>
-  <p>Do you want to <a href="{{ url_for('login') }}">log in?</a></p>
-  <ul>
-    {% for book in books %}
-      <li>{{ book.isbn }} - {{ book.title }}</li>
-    {% endfor %}
-  </ul>
+
+    <div class="col">
+        <h1>Things to read:</h1>
+        <div class="card-columns">
+            {% for book in books %}
+                <div class="card">
+                    <a target="_blank" href="https://www.goodreads.com/book/isbn/{{ book.isbn }}">
+                        <img class="card-img-left" style="width: 100%; height: auto" src={{ book.img_url }} alt={{ book.title }}>
+                    </a>
+                    <div class="card-body">
+                        <a target="_blank" href="https://www.goodreads.com/book/isbn/{{ book.isbn }}">
+                            <h5 class="card-title">{{ book.title }}</h5>
+                        </a>
+                    </div>
+                    <div class="card-footer">
+                        <small class="text-muted">isbn: {{ book.isbn }}</small>
+                        <small class="text-muted">rating: {{ book.rating }}</small>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
 
 {% endblock %}

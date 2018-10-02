@@ -1,0 +1,31 @@
+{% extends "layout.html" %}
+{% block title %}Book search{% endblock %}
+{% block content %}
+    <div class="col-md-4">
+        <form action="/search" method="post">
+            <div class="form-row align-items-center">
+                <div class="col-auto">
+                    <input autocomplete="off" autofocus class="form-control mb-2" name="query" placeholder="Book search" type="text"/>
+                </div>
+                <div class="col-auto">
+                    <button type="submit" class="btn btn-primary mb-2">Submit</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <ul>
+                {% if not books %}
+                    <li>No result. Try another search.</li>
+                {% endif %}
+                {% for book in books %}
+                    <li>
+                        <a href="/book/{{ book.id }}"> {{ book.author }} - {{ book.title }} - {{ book.year }} - {{ book.isbn }} </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+
+{% endblock %}
