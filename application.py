@@ -148,8 +148,6 @@ def search():
     if request.method == "POST":
         books = db.execute("SELECT * FROM books WHERE isbn LIKE :query OR title ILIKE :query OR author ILIKE :query ORDER BY author",
                            {"query": "%" + request.form.get("query") + "%"}).fetchall()
-        print("Query string = ", "%" + request.form.get("query") + "%")
-        print("Search result = ", books)
         return render_template("search.html", books=books)
 
     return render_template("search.html")
@@ -223,9 +221,9 @@ def book_info(book_id):
             "author": book["author"],
             "title": book["title"],
             "year": int(book["year"]),
-            "reviews_count": int(gr["books"][0]["reviews_count"]),
-            "average_rating": float(gr["books"][0]["average_rating"]),
-            "ratings_count": int(gr["books"][0]["ratings_count"]),
+            "gr_reviews_count": int(gr["books"][0]["reviews_count"]),
+            "gr_average_rating": float(gr["books"][0]["average_rating"]),
+            "gr_ratings_count": int(gr["books"][0]["ratings_count"]),
             "reviews": book_reviews,
             "img_url": re.findall("<image_url>(.*?)</image_url>", xml_res)[0]
             }

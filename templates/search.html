@@ -17,13 +17,12 @@
     <div class="row">
         <div class="col">
             <ul>
-                {% if not books %}
-                    <li>No result. Try another search.</li>
-                {% endif %}
                 {% for book in books %}
                     <li>
                         <a href="/book/{{ book.id }}"> {{ book.author }} - {{ book.title }} - {{ book.year }} - {{ book.isbn }} </a>
                     </li>
+                {% else %}
+                    <li>No result. Try another search.</li>
                 {% endfor %}
             </ul>
         </div>

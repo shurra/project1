@@ -3,7 +3,7 @@
 {% block content %}
     <div class="col">
         <h1>Book info</h1>
-        <img class="img-thumbnail img-fluid float-left" src="{{ book.img_url }}" alt={{ book.title }} class="pull-left mr-2">
+        <img class="img-thumbnail img-fluid float-left" src="{{ book.img_url }}" alt={{ book.title }} class="pull-left">
         <ul class="float-left">
             <li>
                 Title: <h5>{{ book.title }}</h5>
@@ -17,19 +17,22 @@
             <li>
                 ISBN: <h5>{{ book.isbn }}</h5>
             </li>
-            <li>Goodreads rating: <h5>{{ book.average_rating }}</h5></li>
-            <li>Goodreads ratings count: <h5>{{ book.ratings_count }}</h5></li>
+            <li>Goodreads rating: <h5>{{ book.gr_average_rating }}</h5></li>
+            <li>Goodreads ratings count: <h5>{{ book.gr_ratings_count }}</h5></li>
         </ul>
     </div>
     <div class="col">
         <h1>Reviews</h1>
+        <span>Reviews count: {{ book.reviews|length() }}</span>
+        <span>Average rating: {{ book.reviews|sum(attribute='rating') / book.reviews|length() }}</span>
         <ul>
             {% for review in book.reviews %}
-                <li><strong>{{ review[0] }}</strong> rated it <span style="color: red">{{ review[2] * "♥" }}</span><br>
-                    {{ review[1] }}
+                <li><strong>{{ review.username }}</strong> rated it <span style="color: red">{{ review.rating * "♥" }}</span><br>
+                    {{ review.text }}
                 </li>
             {% endfor %}
         </ul>
+
     </div>
     </div>
     <div class="row">
