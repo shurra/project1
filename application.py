@@ -84,6 +84,7 @@ def login():
             # Ensure username exists and password is correct
             if not user or not check_password_hash(user.hash, request.form.get("password")):
                 flash("invalid username and/or password")
+                return render_template("login.html")
 
             # Remember which user has logged in
             session["user_id"] = user.id
