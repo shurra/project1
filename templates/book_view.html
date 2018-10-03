@@ -24,7 +24,12 @@
     <div class="col">
         <h1>Reviews</h1>
         <span>Reviews count: {{ book.reviews|length() }}</span>
-        <span>Average rating: {{ book.reviews|sum(attribute='rating') / book.reviews|length() }}</span>
+        <span>Average rating:
+            {% if book.reviews|length() != 0  %}
+                {{ book.reviews|sum(attribute='rating') / book.reviews|length() }}</span>
+            {% else %}
+                0
+            {% endif %}
         <ul>
             {% for review in book.reviews %}
                 <li><strong>{{ review.username }}</strong> rated it <span style="color: red">{{ review.rating * "♥" }}</span><br>
