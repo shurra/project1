@@ -45,8 +45,10 @@ def index():
     for book in random_books:
         search_res = requests.get("https://www.goodreads.com/search/index.xml",
                                   params={"key": GoodreadsKey, "q": book.isbn}).text
+        # book_id = db.execute("SELECT id FROM books WHERE isbn = :isbn", {"isbn": book.isbn})
         books.append(
             {"isbn": book.isbn,
+             "book_id": book.id,
              "title": book.title,
              "author": book.author,
              "rating": re.findall("<average_rating>(.*?)</average_rating>", search_res)[0],

@@ -3,7 +3,9 @@
 {% block content %}
     <div class="col">
         <h1>Book info</h1>
-        <img class="img-thumbnail img-fluid float-left" src="{{ book.img_url }}" alt={{ book.title }} class="pull-left">
+        <a href="https://www.goodreads.com/book/isbn/{{ book.isbn }}" target="_blank">
+            <img class="img-thumbnail img-fluid float-left" src="{{ book.img_url }}" alt={{ book.title }} class="pull-left">
+        </a>
         <ul class="float-left">
             <li>
                 Title: <h5>{{ book.title }}</h5>
